@@ -29,7 +29,7 @@ pnpm tauri dev
 
 ## Auto-updates
 
-Releases can be signed with Tauri’s updater. Set `TAURI_SIGNING_PRIVATE_KEY` (and optional password) in CI to match the public key in `src-tauri/tauri.conf.json`. Upload `latest.json` with your release artifacts as per [Tauri updater docs](https://v2.tauri.app/plugin/updater/).
+Updater artifact signing is currently disabled in `src-tauri/tauri.conf.json` so CI releases do not fail when signing secrets are unavailable or misconfigured. Re-enable `createUpdaterArtifacts` and provide `TAURI_SIGNING_PRIVATE_KEY` plus its password in CI when you are ready to ship signed updater artifacts. See the [Tauri updater docs](https://v2.tauri.app/plugin/updater/) for the release format and `latest.json` upload flow.
 
 ## License
 
