@@ -1,0 +1,59 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "MCPDeck",
+  "version": "1.0.1",
+  "identifier": "dev.nishant.mcpdeck",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
+    "beforeBundleCommand": "cd src-tauri && bash scripts/prepare-sidecar.sh release"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "MCPDeck",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 900,
+        "minHeight": 600,
+        "resizable": true,
+        "fullscreen": false,
+        "titleBarStyle": "Overlay",
+        "acceptFirstMouse": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEJENjIwRTkzQjY0ODg1QzAKUldUQWhVaTJrdzVpdmVnVGZFVzdVVlpucTV3NkptVGZ4RWZmZkM2Ui9GbTFnTEErdDBBKzZIUlcK",
+      "endpoints": [
+        "https://github.com/codewithevilxd/mcpdeck/releases/latest/download/latest.json"
+      ],
+      "windows": { "installMode": "passive" }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "createUpdaterArtifacts": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "externalBin": ["binaries/tsr"],
+    "macOS": {
+      "minimumSystemVersion": "10.15",
+      "entitlements": "entitlements.plist",
+      "signingIdentity": null,
+      "providerShortName": null
+    }
+  }
+}
