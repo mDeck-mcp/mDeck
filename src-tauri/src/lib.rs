@@ -4,6 +4,7 @@ pub mod registry;
 pub mod tray;
 
 use std::sync::Mutex;
+use tauri::Manager;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -60,13 +61,11 @@ pub fn run() {
       #[cfg(target_os = "macos")]
       {
         if let Some(main_win) = app.get_webview_window("main") {
-          let app_handle = app.handle().clone();
-          main_win.on_window_event(move |event: &tauri::WindowEvent| {
+          let main_win_clone = main_win.clone();
+          main_win.on_window_event(move |event| {
             if let tauri::WindowEvent::CloseRequested { api, .. } = event {
               api.prevent_close();
-              if let Some(w) = app_handle.get_webview_window("main") {
-                w.hide().ok();
-              }
+              let _ = main_win_clone.hide();
             }
           });
         }
