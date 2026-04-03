@@ -74,20 +74,6 @@ jobs:
           CERTIFICATE_PATH="$RUNNER_TEMP/certificate.p12"
           KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
 
-          # Fail fast if secrets are missing/empty
-          if [[ -z "${APPLE_CERTIFICATE:-}" ]]; then
-            echo "❌ APPLE_CERTIFICATE secret is missing/empty" >&2
-            exit 1
-          fi
-          if [[ -z "${APPLE_CERTIFICATE_PASSWORD:-}" ]]; then
-            echo "❌ APPLE_CERTIFICATE_PASSWORD secret is missing/empty" >&2
-            exit 1
-          fi
-          if [[ -z "${KEYCHAIN_PASSWORD:-}" ]]; then
-            echo "❌ KEYCHAIN_PASSWORD secret is missing/empty" >&2
-            exit 1
-          fi
-
           # Decode base64 safely (printf avoids newline issues)
           printf '%s' "$APPLE_CERTIFICATE" | base64 --decode > "$CERTIFICATE_PATH"
 
@@ -169,4 +155,10 @@ jobs:
       # ── macOS: clean up keychain ───────────────────────────────────────────
       - name: Clean up keychain
         if: matrix.platform == 'macos-latest' && always()
-        run: security delete-keychain $RUNNER_TEMP/app-signing.keychain-db
+        run: |
+          KEYCHAIN="$RUNNER_TEMP/app-signing.keychain-db"
+          if [[ -f "$KEYCHAIN" ]]; then
+            security delete-keychain "$KEYCHAIN"
+          else
+            echo "No keychain to delete: $KEYCHAIN"
+          fi
