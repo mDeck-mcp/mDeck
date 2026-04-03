@@ -49,6 +49,12 @@
       "icons/icon.ico"
     ],
     "externalBin": ["binaries/tsr"],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "offlineInstaller",
+        "silent": true
+      }
+    },
     "macOS": {
       "minimumSystemVersion": "10.15",
       "entitlements": "entitlements.plist",
